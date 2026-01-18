@@ -1,30 +1,17 @@
+// vite.config.ts
 import { defineConfig } from 'vite'
-import { devtools } from '@tanstack/devtools-vite'
+import tsConfigPaths from 'vite-tsconfig-paths'
 import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import viteReact from '@vitejs/plugin-react'
-import viteTsConfigPaths from 'vite-tsconfig-paths'
-import { fileURLToPath, URL } from 'url'
 
-import tailwindcss from '@tailwindcss/vite'
-import netlify from '@netlify/vite-plugin-tanstack-start'
-
-const config = defineConfig({
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
-    },
+export default defineConfig({
+  server: {
+    port: 3000,
   },
   plugins: [
-    devtools(),
-    netlify(),
-    // this is the plugin that enables path aliases
-    viteTsConfigPaths({
-      projects: ['./tsconfig.json'],
-    }),
-    tailwindcss(),
+    tsConfigPaths(),
     tanstackStart(),
+    // react's vite plugin must come after start's vite plugin
     viteReact(),
   ],
 })
-
-export default config
