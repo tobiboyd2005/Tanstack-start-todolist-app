@@ -16,7 +16,7 @@ function Home() {
 				onClick={() => {
 					navigate({ to: "/todos" });
 				}}
-				className="text-black bg-white"
+				className="text-black bg-white hover:bg-black hover:text-white border border-white"
 			>
 				Start Tracking your tasks Tobi!
 			</Button>

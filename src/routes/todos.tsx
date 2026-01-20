@@ -1,12 +1,30 @@
-import TaskInput from "@/components/TaskInput";
 import { createFileRoute } from "@tanstack/react-router";
 import { Ellipsis, Menu, Search, SquarePen } from "lucide-react";
+import { useState } from "react";
+import Task from "@/components/Task";
+import TaskInput from "@/components/TaskInput";
 
 export const Route = createFileRoute("/todos")({
 	component: RouteComponent,
 });
 
 function RouteComponent() {
+	const [tasks, setTasks] = useState<Array<{ id: number; name: string }>>([]);
+
+	function addTask(name: string) {
+		setTasks(prev => [
+			...prev,
+			{
+				id: Date.now(),
+				name
+			}
+		])
+	}
+
+	function deleteTask(id:number){
+		setTasks(prev => prev.filter(task => task.id !== id));
+	}
+
 	return (
 		<div className="w-96">
 			<div className="flex justify-between items-center mb-8">
@@ -22,8 +40,13 @@ function RouteComponent() {
 				</section>
 			</div>
 			<div className="flex flex-col justify-center items-center mb-8">
-        <TaskInput/>
+				<TaskInput onAddTask={addTask}/>
+				{tasks.map(task => (
+						<Task key={task.id} id={task.id} name={task.name} onDelete={deleteTask}/>
+				))}
+
 			</div>
 		</div>
 	);
 }
+
